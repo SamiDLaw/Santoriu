@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Bottle -->
+  <path d="M40 30C40 25 45 20 60 20C75 20 80 25 80 30V100C80 105 75 110 60 110C45 110 40 105 40 100V30Z" fill="none" stroke="#000000" stroke-width="2"/>
+  
+  <!-- Bottle neck -->
+  <path d="M50 20C50 15 55 10 60 10C65 10 70 15 70 20" stroke="#000000" stroke-width="2" fill="none"/>
+  
+  <!-- Bottle cap -->
+  <rect x="50" y="8" width="20" height="4" rx="1" fill="#000000"/>
+  
+  <!-- Katana handle (tsuka) -->
+  <rect x="55" y="40" width="10" height="20" rx="2" fill="#FF4500"/>
+  
+  <!-- Katana guard (tsuba) -->
+  <rect x="52" y="60" width="16" height="3" rx="1" fill="#000000"/>
+  
+  <!-- Katana blade -->
+  <path d="M60 63L60 90" stroke="#000000" stroke-width="2"/>
+  
+  <!-- Reflection/shine on bottle -->
+  <path d="M75 35C75 35 72 60 72 80C72 90 70 95 70 95" stroke="#FFFFFF" stroke-width="1" stroke-opacity="0.5"/>
+  
+  <!-- Waves inside bottle -->
+  <path d="M45 85C50 83 55 87 60 85C65 87 70 83 75 85" stroke="#000000" stroke-width="1" stroke-opacity="0.3" fill="none"/>
+  <path d="M45 90C50 88 55 92 60 90C65 92 70 88 75 90" stroke="#000000" stroke-width="1" stroke-opacity="0.3" fill="none"/>
+  
+  <!-- Sparkles around katana -->
+  <path d="M65 50L68 53M65 53L68 50M55 70L52 73M55 73L52 70" stroke="#FF4500" stroke-width="1"/>
+</svg>

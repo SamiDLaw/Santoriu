@@ -1,0 +1,90 @@
+{
+  "site": {
+    "title": "Santoriu - Bouteille Décorative Thousand Sunny",
+    "description": "Bouteille décorative exclusive inspirée de One Piece - Le cadeau parfait pour les fans d'anime et de manga",
+    "keywords": "One Piece, Thousand Sunny, bouteille décorative, anime, manga, otaku, cadeau"
+  },
+  "nav": {
+    "home": "Accueil",
+    "product": "Produit",
+    "about": "À propos",
+    "contact": "Contact"
+  },
+  "hero": {
+    "title": "Le Légendaire Thousand Sunny",
+    "subtitle": "Capturé dans une Bouteille",
+    "description": "Possédez un morceau de Grand Line avec cette bouteille décorative exclusive présentant l'emblématique navire Thousand Sunny de One Piece",
+    "cta": "Commander Maintenant"
+  },
+  "product": {
+    "name": "Bouteille Décorative Thousand Sunny",
+    "price": "49,99 €",
+    "shipping": "Livraison Gratuite",
+    "limited": "Stock Limité",
+    "features": {
+      "title": "Caractéristiques du Produit",
+      "handcrafted": "Fabriqué à la main avec des matériaux premium",
+      "exclusive": "Design exclusif",
+      "detailed": "Réplique très détaillée",
+      "size": "Dimensions : 20cm x 10cm",
+      "material": "Verre et résine de haute qualité"
+    }
+  },
+  "unique": {
+    "title": "Pourquoi Ce Produit Est Unique",
+    "point1": "Officiellement inspiré du chef-d'œuvre d'Eiichiro Oda",
+    "point2": "Chaque pièce est soigneusement fabriquée à la main",
+    "point3": "Pièce maîtresse parfaite pour toute collection One Piece",
+    "point4": "Production limitée"
+  },
+  "reviews": {
+    "title": "Ce Que Disent Nos Clients",
+    "review1": {
+      "name": "Jean D.",
+      "text": "Les détails sur cette bouteille Thousand Sunny sont incroyables ! Un must pour tout fan de One Piece.",
+      "rating": 5
+    },
+    "review2": {
+      "name": "Sophie K.",
+      "text": "J'ai acheté ceci comme cadeau pour mon frère qui adore One Piece. Il était absolument ravi !",
+      "rating": 5
+    },
+    "review3": {
+      "name": "Michel T.",
+      "text": "Qualité incroyable et livraison rapide. C'est encore plus beau en vrai !",
+      "rating": 4
+    }
+  },
+  "payment": {
+    "title": "Paiement & Livraison Sécurisés",
+    "secure": "Paiement sécurisé via Stripe et PayPal",
+    "shipping": "Livraison mondiale disponible",
+    "delivery": "Livraison sous 7-14 jours ouvrables",
+    "guarantee": "Garantie satisfait ou remboursé de 30 jours"
+  },
+  "faq": {
+    "title": "Questions Fréquemment Posées",
+    "q1": "Combien de temps prend la livraison ?",
+    "a1": "La livraison prend généralement 7-14 jours ouvrables selon votre localisation.",
+    "q2": "Est-ce un produit officiel One Piece ?",
+    "a2": "C'est une création inspirée par des fans, pas un produit sous licence officielle.",
+    "q3": "Quelles sont les dimensions de la bouteille ?",
+    "a3": "La bouteille mesure environ 20cm de hauteur et 10cm de largeur.",
+    "q4": "Livrez-vous à l'international ?",
+    "a4": "Oui, nous livrons dans le monde entier avec suivi fourni pour toutes les commandes."
+  },
+  "footer": {
+    "copyright": "© 2025 Santoriu. Tous droits réservés.",
+    "terms": "Conditions Générales",
+    "privacy": "Politique de Confidentialité",
+    "returns": "Politique de Retour",
+    "contact": "Nous Contacter"
+  },
+  "success": {
+    "title": "Merci Pour Votre Commande !",
+    "message": "Votre commande a été passée avec succès. Vous recevrez un email de confirmation sous peu.",
+    "shipping": "Votre commande sera expédiée sous 1-2 jours ouvrables.",
+    "contact": "Si vous avez des questions, veuillez nous contacter à support@santoriu.com",
+    "return": "Retour à la Page d'Accueil"
+  }
+}
