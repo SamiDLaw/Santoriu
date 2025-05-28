@@ -23,8 +23,8 @@
       "handle": "filesystem"
     },
     {
-      "src": "/(.*)\\.(js|css|svg|ico|jpg|jpeg|png|gif|webp)",
-      "dest": "/assets/$1.$2"
+      "src": "/assets/(.*)",
+      "dest": "/assets/$1"
     },
     {
       "src": "/(.*)",
