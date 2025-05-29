@@ -5,8 +5,8 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY || 'sk_test_place
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Pour l'intégration Shippo (à activer quand vous aurez une clé API)
-// const Shippo = require('shippo')(process.env.SHIPPO_API_KEY);
+// Intégration Shippo avec la clé API de test
+const Shippo = require('shippo')(process.env.SHIPPO_API_KEY || 'shippo_test_ceda0c25186a3deb9358404a5afa902ce60b3056');
 
 // Stockage temporaire des commandes (à remplacer par une base de données)
 let orders = [];
@@ -230,10 +230,90 @@ app.post('/api/orders/:id/status', (req, res) => {
   res.json(orders[orderIndex]);
 });
 
-// API pour créer une étiquette d'expédition (à implémenter avec Shippo)
-app.post('/api/shipping/create-label', (req, res) => {
-  // Cette route sera implémentée quand vous aurez une clé API Shippo
-  res.status(501).json({ message: 'Fonctionnalité en cours de développement' });
+// API pour créer une étiquette d'expédition avec Shippo
+app.post('/api/shipping/create-label', async (req, res) => {
+  try {
+    const { orderId, fromAddress, toAddress, parcel } = req.body;
+    
+    // Vérifier que toutes les informations nécessaires sont présentes
+    if (!fromAddress || !toAddress || !parcel) {
+      return res.status(400).json({ error: 'Informations d\'expédition incomplètes' });
+    }
+    
+    // Créer l'expédition avec Shippo
+    const shipment = await Shippo.shipment.create({
+      address_from: fromAddress,
+      address_to: toAddress,
+      parcels: [parcel],
+      async: false
+    });
+    
+    // Récupérer les tarifs d'expédition disponibles
+    const rates = shipment.rates;
+    
+    // Si un orderId est fourni, mettre à jour la commande avec les informations d'expédition
+    if (orderId) {
+      const orderIndex = orders.findIndex(order => order.id === orderId);
+      if (orderIndex !== -1) {
+        orders[orderIndex].shipping.shipment_id = shipment.object_id;
+        orders[orderIndex].shipping.rates = rates;
+        
+        // Ajouter un événement à la timeline
+        orders[orderIndex].timeline.push({
+          date: new Date().toISOString(),
+          title: 'Expédition créée',
+          description: 'Options d\'expédition générées via Shippo'
+        });
+      }
+    }
+    
+    res.json({
+      shipment_id: shipment.object_id,
+      rates: rates
+    });
+  } catch (error) {
+    console.error('Erreur lors de la création de l\'expédition:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// API pour acheter une étiquette d'expédition
+app.post('/api/shipping/purchase-label', async (req, res) => {
+  try {
+    const { orderId, rateId } = req.body;
+    
+    if (!rateId) {
+      return res.status(400).json({ error: 'ID de tarif manquant' });
+    }
+    
+    // Acheter l'étiquette avec le tarif sélectionné
+    const transaction = await Shippo.transaction.create({
+      rate: rateId,
+      label_file_type: 'PDF',
+      async: false
+    });
+    
+    // Si un orderId est fourni, mettre à jour la commande avec les informations d'étiquette
+    if (orderId) {
+      const orderIndex = orders.findIndex(order => order.id === orderId);
+      if (orderIndex !== -1) {
+        orders[orderIndex].shipping.label = transaction;
+        orders[orderIndex].status = 'shipped';
+        
+        // Ajouter un événement à la timeline
+        orders[orderIndex].timeline.push({
+          date: new Date().toISOString(),
+          title: 'Commande expédiée',
+          description: `Étiquette d'expédition créée, numéro de suivi: ${transaction.tracking_number}`
+        });
+      }
+    }
+    
+    res.json(transaction);
+  } catch (error) {
+    console.error('Erreur lors de l\'achat de l\'\u00e9tiquette:', error);
+    res.status(500).json({ error: error.message });
+  }
 });
 
 // Start server

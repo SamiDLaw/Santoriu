@@ -12,12 +12,24 @@
     {
       "src": "assets/**",
       "use": "@vercel/static"
+    },
+    {
+      "src": "admin/**",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
       "dest": "server.js"
+    },
+    {
+      "src": "/admin",
+      "dest": "server.js"
+    },
+    {
+      "src": "/admin/(.*)",
+      "dest": "/admin/$1"
     },
     {
       "handle": "filesystem"
