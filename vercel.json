@@ -25,7 +25,7 @@
     },
     {
       "src": "/admin",
-      "dest": "server.js"
+      "dest": "/admin/index.html"
     },
     {
       "src": "/admin/(.*)",
