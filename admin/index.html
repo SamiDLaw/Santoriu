@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Santoriu - Administration</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="/assets/css/reset.css">
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <header class="admin-header">
+    <div class="container">
+      <div class="admin-header-content">
+        <a href="/" class="logo">
+          <img src="/assets/img/logo.svg" alt="Santoriu Logo">
+          <span>Santoriu</span>
+        </a>
+        <h1>Administration</h1>
+      </div>
+    </div>
+  </header>
+
+  <main class="admin-main">
+    <div class="container">
+      <div class="admin-login" id="login-section">
+        <h2>Connexion</h2>
+        <form id="login-form">
+          <div class="form-group">
+            <label for="username">Nom d'utilisateur</label>
+            <input type="text" id="username" name="username" required>
+          </div>
+          <div class="form-group">
+            <label for="password">Mot de passe</label>
+            <input type="password" id="password" name="password" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Se connecter</button>
+        </form>
+      </div>
+
+      <div class="admin-dashboard" id="dashboard-section" style="display: none;">
+        <div class="admin-tabs">
+          <button class="tab-btn active" data-tab="orders">Commandes</button>
+          <button class="tab-btn" data-tab="shipping">Expédition</button>
+          <button class="tab-btn" data-tab="settings">Paramètres</button>
+          <button id="logout-btn" class="btn btn-outline">Déconnexion</button>
+        </div>
+
+        <div class="tab-content active" id="orders-tab">
+          <div class="orders-header">
+            <h2>Gestion des commandes</h2>
+            <div class="orders-actions">
+              <button id="refresh-orders" class="btn btn-outline"><i class="fas fa-sync-alt"></i> Actualiser</button>
+              <div class="search-container">
+                <input type="text" id="order-search" placeholder="Rechercher une commande...">
+                <button class="search-btn"><i class="fas fa-search"></i></button>
+              </div>
+            </div>
+          </div>
+
+          <div class="orders-filters">
+            <button class="filter-btn active" data-filter="all">Toutes</button>
+            <button class="filter-btn" data-filter="pending">En attente</button>
+            <button class="filter-btn" data-filter="processing">En traitement</button>
+            <button class="filter-btn" data-filter="shipped">Expédiées</button>
+            <button class="filter-btn" data-filter="delivered">Livrées</button>
+          </div>
+
+          <div class="orders-list-container">
+            <table class="orders-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Date</th>
+                  <th>Client</th>
+                  <th>Montant</th>
+                  <th>Livraison</th>
+                  <th>Statut</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="orders-list">
+                <!-- Les commandes seront ajoutées ici dynamiquement -->
+                <tr class="order-loading">
+                  <td colspan="7">Chargement des commandes...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="tab-content" id="shipping-tab">
+          <h2>Gestion des expéditions</h2>
+          
+          <div class="shipping-actions">
+            <button id="create-label-btn" class="btn btn-primary">Créer une étiquette</button>
+            <button id="batch-labels-btn" class="btn btn-outline">Étiquettes par lot</button>
+          </div>
+
+          <div class="shipping-integration">
+            <h3>Intégration Shippo</h3>
+            <p>Connectez-vous à Shippo pour gérer vos expéditions et imprimer des étiquettes d'expédition.</p>
+            
+            <div class="api-key-form">
+              <div class="form-group">
+                <label for="shippo-api-key">Clé API Shippo</label>
+                <input type="password" id="shippo-api-key" placeholder="Entrez votre clé API Shippo">
+                <button id="save-shippo-key" class="btn btn-primary">Enregistrer</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="pending-shipments">
+            <h3>Commandes à expédier</h3>
+            <div id="pending-shipments-list">
+              <!-- Les commandes à expédier seront ajoutées ici dynamiquement -->
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content" id="settings-tab">
+          <h2>Paramètres</h2>
+          
+          <div class="settings-section">
+            <h3>Informations de la boutique</h3>
+            <form id="store-info-form">
+              <div class="form-group">
+                <label for="store-name">Nom de la boutique</label>
+                <input type="text" id="store-name" value="Santoriu">
+              </div>
+              <div class="form-group">
+                <label for="store-email">Email</label>
+                <input type="email" id="store-email" placeholder="contact@santoriu.com">
+              </div>
+              <div class="form-group">
+                <label for="store-address">Adresse d'expédition</label>
+                <textarea id="store-address" placeholder="Adresse complète pour l'expédition"></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Enregistrer</button>
+            </form>
+          </div>
+
+          <div class="settings-section">
+            <h3>Options de livraison</h3>
+            <form id="shipping-options-form">
+              <div class="shipping-option">
+                <h4>Livraison standard</h4>
+                <div class="form-group">
+                  <label for="standard-price-eur">Prix (EUR)</label>
+                  <input type="number" id="standard-price-eur" value="5.90" step="0.01">
+                </div>
+                <div class="form-group">
+                  <label for="standard-price-usd">Prix (USD)</label>
+                  <input type="number" id="standard-price-usd" value="6.50" step="0.01">
+                </div>
+                <div class="form-group">
+                  <label for="standard-min-days">Délai minimum (jours ouvrés)</label>
+                  <input type="number" id="standard-min-days" value="3">
+                </div>
+                <div class="form-group">
+                  <label for="standard-max-days">Délai maximum (jours ouvrés)</label>
+                  <input type="number" id="standard-max-days" value="5">
+                </div>
+              </div>
+
+              <div class="shipping-option">
+                <h4>Livraison express</h4>
+                <div class="form-group">
+                  <label for="express-price-eur">Prix (EUR)</label>
+                  <input type="number" id="express-price-eur" value="9.90" step="0.01">
+                </div>
+                <div class="form-group">
+                  <label for="express-price-usd">Prix (USD)</label>
+                  <input type="number" id="express-price-usd" value="10.90" step="0.01">
+                </div>
+                <div class="form-group">
+                  <label for="express-min-days">Délai minimum (jours ouvrés)</label>
+                  <input type="number" id="express-min-days" value="1">
+                </div>
+                <div class="form-group">
+                  <label for="express-max-days">Délai maximum (jours ouvrés)</label>
+                  <input type="number" id="express-max-days" value="2">
+                </div>
+              </div>
+              
+              <button type="submit" class="btn btn-primary">Enregistrer</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="order-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <h2>Détails de la commande</h2>
+      <div id="order-details">
+        <!-- Les détails de la commande seront ajoutés ici dynamiquement -->
+      </div>
+      <div class="modal-actions">
+        <button id="print-order" class="btn btn-outline"><i class="fas fa-print"></i> Imprimer</button>
+        <button id="create-shipping-label" class="btn btn-primary">Créer étiquette d'expédition</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>

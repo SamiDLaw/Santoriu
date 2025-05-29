@@ -18,6 +18,7 @@
   "license": "MIT",
   "dependencies": {
     "express": "^4.21.2",
+    "shippo": "^2.15.0",
     "stripe": "^12.5.0"
   },
   "devDependencies": {
