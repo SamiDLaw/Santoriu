@@ -39,27 +39,38 @@ document.addEventListener('DOMContentLoaded', () => {
   checkLoginStatus();
   
   // Gestionnaires d'événements
-  loginForm.addEventListener('submit', handleLogin);
-  logoutBtn.addEventListener('click', handleLogout);
+  if (loginForm) {
+    loginForm.addEventListener('submit', handleLogin);
+  } else {
+    console.error('Login form not found!');
+  }
+  
+  if (logoutBtn) logoutBtn.addEventListener('click', handleLogout);
+  
   tabButtons.forEach(button => {
     button.addEventListener('click', () => switchTab(button.dataset.tab));
   });
-  refreshOrdersBtn.addEventListener('click', fetchOrders);
-  orderSearchInput.addEventListener('input', filterOrders);
+  
+  if (refreshOrdersBtn) refreshOrdersBtn.addEventListener('click', fetchOrders);
+  if (orderSearchInput) orderSearchInput.addEventListener('input', filterOrders);
+  
   filterButtons.forEach(button => {
     button.addEventListener('click', () => filterOrdersByStatus(button.dataset.filter));
   });
-  closeModal.addEventListener('click', () => orderModal.style.display = 'none');
+  
+  if (closeModal) closeModal.addEventListener('click', () => orderModal.style.display = 'none');
+  
   window.addEventListener('click', (e) => {
     if (e.target === orderModal) {
       orderModal.style.display = 'none';
     }
   });
-  printOrderBtn.addEventListener('click', printOrder);
-  createShippingLabelBtn.addEventListener('click', createShippingLabel);
-  saveShippoKeyBtn.addEventListener('click', saveShippoKey);
-  storeInfoForm.addEventListener('submit', saveStoreInfo);
-  shippingOptionsForm.addEventListener('submit', saveShippingOptions);
+  
+  if (printOrderBtn) printOrderBtn.addEventListener('click', printOrder);
+  if (createShippingLabelBtn) createShippingLabelBtn.addEventListener('click', createShippingLabel);
+  if (saveShippoKeyBtn) saveShippoKeyBtn.addEventListener('click', saveShippoKey);
+  if (storeInfoForm) storeInfoForm.addEventListener('submit', saveStoreInfo);
+  if (shippingOptionsForm) shippingOptionsForm.addEventListener('submit', saveShippingOptions);
   
   // Charger les valeurs sauvegardées
   loadSavedSettings();
@@ -488,19 +499,27 @@ function getStatusLabel(status) {
 
 // Fonctions globales (appelées depuis le HTML)
 window.viewOrder = viewOrder;
+window.handleLogin = handleLogin;
+window.checkLoginStatus = checkLoginStatus;
+
 window.editOrderStatus = function(orderId) {
+  // Ouvrir la modal avec les détails de la commande pour édition
   viewOrder(orderId);
 };
+
 window.confirmDeleteOrder = function(orderId) {
-  if (confirm('Êtes-vous sûr de vouloir supprimer cette commande ?')) {
-    // Logique de suppression (à implémenter)
-    alert('Fonctionnalité de suppression en cours de développement.');
+  if (confirm('Êtes-vous sûr de vouloir supprimer la commande ' + orderId + ' ?')) {
+    // Implémenter la suppression de commande
+    alert('Fonctionnalité à implémenter: suppression de la commande ' + orderId);
   }
 };
+
 window.updateOrderStatus = function(orderId) {
   const newStatus = document.getElementById('order-status-select').value;
   const order = orders.find(o => o.id === orderId);
+  
   if (order) {
+    // Mise à jour locale
     order.status = newStatus;
     order.timeline.push({
       date: new Date().toISOString(),
@@ -508,12 +527,28 @@ window.updateOrderStatus = function(orderId) {
       description: 'Mise à jour manuelle depuis le tableau de bord admin'
     });
     
-    // Fermer la modal et rafraîchir la liste
-    orderModal.style.display = 'none';
-    renderOrders(orders);
-    loadPendingShipments();
+    // Appel à l'API pour mettre à jour le statut
+    fetch(`${API_URL}/orders/${orderId}/status`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ status: newStatus })
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Fermer la modal et rafraîchir la liste
+      orderModal.style.display = 'none';
+      renderOrders(orders);
+      loadPendingShipments();
+    })
+    .catch(error => {
+      console.error('Erreur lors de la mise à jour du statut:', error);
+      alert('Erreur lors de la mise à jour du statut. Veuillez réessayer.');
+    });
   }
 };
+
 window.createShippingLabelForOrder = createShippingLabelForOrder;
 
 // Données fictives pour la démo

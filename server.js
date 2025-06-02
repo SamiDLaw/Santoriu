@@ -10,10 +10,14 @@ let Shippo;
 try {
   // Essayer de charger Shippo seulement si nécessaire
   const shippoModule = require('shippo');
-  Shippo = shippoModule(process.env.SHIPPO_API_KEY || 'shippo_test_ceda0c25186a3deb9358404a5afa902ce60b3056');
+  if (typeof shippoModule === 'function') {
+    Shippo = shippoModule(process.env.SHIPPO_API_KEY || 'shippo_test_ceda0c25186a3deb9358404a5afa902ce60b3056');
+  } else {
+    throw new Error('Module Shippo non disponible: format incorrect');
+  }
 } catch (error) {
   console.warn('Module Shippo non disponible:', error.message);
-  // Créer un objet factice pour éviter les erreurs
+  // Créer un objet factice pour éviter les erreurs et assurer la continuité
   Shippo = {
     shipment: { create: () => Promise.resolve({ rates: [] }) },
     transaction: { create: () => Promise.resolve({}) }
@@ -147,8 +151,12 @@ app.post('/api/process-payment', async (req, res) => {
   }
 });
 
-// Routes pour l'administration
-app.get('/admin', (req, res) => {
+// Configuration des routes pour l'interface d'administration
+// Servir les fichiers statiques du dossier admin (doit être avant les routes spécifiques)
+app.use('/admin', express.static(path.join(__dirname, 'admin')));
+
+// Routes pour l'administration (avec et sans slash final)
+app.get(['/admin', '/admin/'], (req, res) => {
   res.sendFile(path.join(__dirname, 'admin/index.html'));
 });
 
