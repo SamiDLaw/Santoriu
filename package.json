@@ -17,6 +17,7 @@
   "author": "Santoriu",
   "license": "MIT",
   "dependencies": {
+    "dotenv": "^16.5.0",
     "express": "^4.21.2",
     "shippo": "^2.15.0",
     "stripe": "^12.5.0"

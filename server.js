@@ -1,20 +1,22 @@
 // Server for Santoriu Boutique
+// Charger les variables d'environnement depuis le fichier .env
+require('dotenv').config();
+
 const express = require('express');
 const path = require('path');
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Intégration Shippo avec la clé API de test - chargement conditionnel
+// Intégration Shippo avec la clé API depuis les variables d'environnement
 let Shippo;
 try {
-  // Essayer de charger Shippo seulement si nécessaire
-  const shippoModule = require('shippo');
-  if (typeof shippoModule === 'function') {
-    Shippo = shippoModule(process.env.SHIPPO_API_KEY || 'shippo_test_ceda0c25186a3deb9358404a5afa902ce60b3056');
-  } else {
-    throw new Error('Module Shippo non disponible: format incorrect');
-  }
+  // Utilisation de la syntaxe moderne du SDK Shippo
+  const { Shippo: ShippoSDK } = require('shippo');
+  Shippo = new ShippoSDK({
+    apiKey: process.env.SHIPPO_API_KEY
+  });
+  console.log('Module Shippo chargé avec succès');
 } catch (error) {
   console.warn('Module Shippo non disponible:', error.message);
   // Créer un objet factice pour éviter les erreurs et assurer la continuité
